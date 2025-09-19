@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lección 2 - Familia en Quechua</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .question-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
+      min-height: 180px;
+    }
+    .question-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+      padding: 1.5rem 2.5rem;
+      border-radius: 18px;
+      letter-spacing: 1.2px;
+
+      /* Nuevo fondo degradado */
+      background:#c78764;
+
+      /* Borde fino */
+      border: 2px solid rgba(255, 255, 255, 0.5);
+
+      /* Animación sutil */
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .answers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .answer-btn {
+      background: #fff;
+      border: 2px solid #e5e5e5;
+      border-radius: 14px;
+      padding: 1.5rem 2.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #b97a57;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      min-width: 150px;
+      text-align: center;
+      box-shadow: 0 2px 8px #e1916622;
+    }
+    .answer-btn:hover, .answer-btn:focus {
+      border-color: #b97a57;
+      box-shadow: 0 4px 18px #b97a5744;
+      background: #faf3ee;
+      outline: none;
+    }
+
+    .result-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .result-modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .result-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #b97a5744;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 340px;
+      animation: pop 0.3s;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7);}
+      80% { transform: scale(1.05);}
+      100% { transform: scale(1);}
+    }
+    .result-card .emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .result-card .result-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      color: #b97a57;
+    }
+    .result-card .result-desc {
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+      color: #80543c;
+    }
+    .result-card .correct-answer {
+      font-size: 1rem;
+      color: #1cb0f6;
+      margin-bottom: 1.2rem;
+    }
+    .result-card .continue-btn {
+      background: linear-gradient(90deg, #b97a57 0%, #de9e7a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 18px #b97a5744;
+      transition: background 0.2s;
+    }
+    .result-card .continue-btn:hover {
+      background: linear-gradient(90deg, #de9e7a 0%, #b97a57 100%);
+    }
+  </style>
+</head>
+<body>
+  <header class="dl-header">
+    <div class="dl-logo">
+      <img src="../static/img/simbolo.png" alt="Logo" class="logo-img">
+      <span class="logo-text">Kuska</span>
+    </div>
+    <div class="dl-lang">DESARROLLADO POR: <span>Kuska.org</span></div>
+  </header>
+  <main>
+    <div class="progress-bar"></div>
+    <div class="question-box" id="question-box"></div>
+    <div class="result-modal" id="result-modal">
+      <div class="result-card" id="result-card"></div>
+    </div>
+  </main>
+  <script>
+    const questions = [
+      {
+        question: "¿Cómo se dice en quechua: 'Ella es mi madre'?",
+        answers: ["Payqa mamaymi", "Payqa taytaymi", "Payqa wawqeymi"],
+        correct: 0
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Él es mi padre'?",
+        answers: ["Payqa mamaymi", "Payqa taytaymi", "Payqa ñañaymi"],
+        correct: 1
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Ella es mi hermana'?",
+        answers: ["Payqa wawqeymi", "Payqa ñañaymi", "Payqa churinmi"],
+        correct: 1
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Él es mi hermano'?",
+        answers: ["Payqa wawqeymi", "Payqa panaymi", "Payqa taytaymi"],
+        correct: 0
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Él es mi hijo'?",
+        answers: ["Payqa churinmi", "Payqa mamaymi", "Payqa ñañaymi"],
+        correct: 0
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Ella es mi hija'?",
+        answers: ["Payqa panaymi", "Payqa ususiymi", "Payqa wawqeymi"],
+        correct: 1
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Ella es mi abuela'?",
+        answers: ["Payqa mamaymi", "Payqa taytaymi", "Payqa mamallaymi"],
+        correct: 2
+      },
+      {
+        question: "¿Cómo se dice en quechua: 'Él es mi abuelo'?",
+        answers: ["Payqa achachaymi", "Payqa taytaymi", "Payqa wawqeymi"],
+        correct: 0
+      }
+    ];
+
+    let current = 0;
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function showQuestion() {
+      const q = questions[current];
+      let shuffled = q.answers.map((a, i) => ({ text: a, index: i }));
+      shuffled = shuffleArray(shuffled);
+
+      document.getElementById('question-box').innerHTML = `
+        <div class="question-title">${q.question}</div>
+        <div class="answers">
+          ${shuffled.map(a => `
+            <button class="answer-btn" onclick="answer(${a.index})">${a.text}</button>
+          `).join('')}
+        </div>
+      `;
+      document.querySelector('.progress-bar').innerHTML = `
+        <div class="progress" style="width:${(current+1)/questions.length*100}%"></div>
+      `;
+    }
+
+    function answer(i) {
+      const q = questions[current];
+      const modal = document.getElementById('result-modal');
+      const card = document.getElementById('result-card');
+      if(i === q.correct){
+        card.innerHTML = `
+          <div class="emoji">🎉</div>
+          <div class="result-title">¡Correcto!</div>
+          <div class="result-desc">¡Muy bien! Has acertado la respuesta.</div>
+          <button class="continue-btn" onclick="nextQuestion()">Continuar</button>
+        `;
+      }else{
+        card.innerHTML = `
+          <div class="emoji">😢</div>
+          <div class="result-title">Incorrecto</div>
+          <div class="result-desc">La respuesta correcta era:</div>
+          <div class="correct-answer">${q.answers[q.correct]}</div>
+          <button class="continue-btn" onclick="nextQuestion()">Continuar</button>
+        `;
+      }
+      modal.classList.add('active');
+    }
+
+    function nextQuestion(){
+      document.getElementById('result-modal').classList.remove('active');
+      current++;
+      if(current < questions.length){
+        showQuestion();
+      }else{
+        document.getElementById('question-box').innerHTML = `
+          <h3 style="text-align:center;font-size:2rem;color:#b97a57;">¡Has completado la lección!</h3>
+          <div class="emoji" style="text-align:center;">🏆</div>
+          <button class="continue-btn" onclick="location.href='{{ url_for("main") }}'">Volver al inicio</button>
+        `;
+        document.querySelector('.progress-bar').innerHTML = `<div class="progress" style="width:100%"></div>`;
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>

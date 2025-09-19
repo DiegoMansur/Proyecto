@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dl-header">
+        <div class="dl-logo">
+            <img src="../static/img/simbolo.png" alt="Logo" class="logo-img">
+            <span class="logo-text">Kuska</span>
+        </div>
+        <div class="dl-lang">DESARROLADO POR: <span>Ku</span></div>
+    </header>
+    <main class="login-container">
+        <div class="login-box">
+            <h2 class="login-title">Ingresar</h2>
+            <form>
+                <input type="text" placeholder="Correo o usuario" required class="login-input">
+                <div class="input-row">
+                    <input type="password" placeholder="Contraseña" required class="login-input">
+                    <a href="#" class="forgot-link">¿Perdiste tu contra?</a>
+                </div>
+                <button type="submit" class="login-btn">INGRESAR</button>
+            </form>
+            <div class="separator">
+                <span>o</span>
+            </div>
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    <img src="../static/img/globo.png" alt="Google" class="social-icon">
+                    GOOGLE
+                </button>
+            </div>
+            <p class="terms-text">
+                Al registrarte en Kuska, aceptas nuestros <a href="#" class="terms-link">Términos y politicas</a>
+            </p>
+        </div>
+    </main>
+</body>
+</html>

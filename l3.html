@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comenzar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dl-header">
+        <div class="dl-logo">
+            <img src="../static/img/simbolo.png"" alt="Logo" class="logo-img">
+            <span class="logo-text">Kuska</span>
+        </div>
+        <div class="dl-lang">DESARROLADO POR: <span>Kuska.org</span></div>
+    </header>
+    <main class="main-dashboard">
+        <div class="main-title-box">
+            <h1 class="main-title">¡Bienvenido!</h1>
+            <p class="main-subtitle">Elige una lección para comenzar tu aprendizaje.</p>
+        </div>
+        <div class="circle-lessons-grid">
+            <a href="{{ url_for('c1') }}" class="circle-lesson">1</a>
+            <a href="{{ url_for('c2') }}" class="circle-lesson">2</a>
+            <a href="{{ url_for('c3') }}" class="circle-lesson">3</a>
+            <a href="{{ url_for('c4') }}" class="circle-lesson">4</a>
+            <a href="{{ url_for('c5') }}" class="circle-lesson">5</a>
+            <a href="{{ url_for('c6') }}" class="circle-lesson">6</a>
+        </div>
+        </div>
+    </main>
+</body>
+</html>

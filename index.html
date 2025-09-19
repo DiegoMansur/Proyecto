@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quechua - Aprende idiomas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+      body {
+        background: linear-gradient(135deg, #fff6e9 0%, #f7e7d7 100%);
+      }
+  </style>
+</head>
+<body>
+  <header class="dl-header">
+    <div class="dl-logo">
+      <img src="../static/img/simbolo.png" alt="Logo" class="logo-img">
+      <span class="logo-text">Kuska</span>
+    </div>
+    <div class="dl-lang">DESARROLADO POR: <span>Kuska.org</span></div>
+  </header>
+
+  <main class="dl-main">
+    <div class="dl-hero-img">
+      <img src="../static/img/simbolo.png" alt="Duolingo characters">
+    </div>
+    <div class="dl-hero-content">
+      <h2>¡Aprende quechua gratis y de forma interactiva!</h2>
+      <div class="dl-buttons">
+        <a href="{{ url_for('main') }}" class="dl-btn dl-btn-green">EMPIEZA AHORA</a>
+        <a href="{{ url_for('sesion') }}" class="dl-btn dl-btn-white">YA TENGO UNA CUENTA</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sección informativa al hacer scroll -->
+  <section class="dl-info">
+    <div class="dl-info-content">
+      <h1 class="dl-info-title">¿Que somos?</h1>
+      <p class="dl-info-desc">
+        Somos un grupo de cinhum apasionados por la lengua quechua y su enseñanza. Nuestra misión es hacer que el aprendizaje del quechua sea accesible, divertido y efectivo para todos. 
+        <a href="#" class="dl-link">Los estudios demuestran que funciona.</a>
+        ¡En nuestras lecciones cortas ganaras puntos y tendras nuevas unidades al mismo tiempo que desarrollas tus habilidades en quechua en la vida real!
+      </p>
+    </div>
+    <div class="dl-info-img">
+      <img src="../static/img/san.png" alt="info">
+    </div>
+  </section>
+</body>
+</html>
